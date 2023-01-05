@@ -1,0 +1,2 @@
+ALTER TABLE facilities DROP CONSTRAINT UC_Name;
+ALTER TABLE facilities DROP CONSTRAINT UC_License_Number;

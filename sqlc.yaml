@@ -1,0 +1,87 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries: "./postgres/query/"
+    schema: "./postgres/migration/"
+    gen:
+      go:
+        package: "sqlc"
+        out: "./sqlc"
+        emit_json_tags: true
+        emit_prepared_queries: false
+        emit_interface: true
+        emit_exact_table_names: false
+        emit_empty_slices: true
+        emit_result_struct_pointers: true
+        emit_params_struct_pointers: true
+        "overrides": [
+          {
+            "go_type": "github.com/shopspring/decimal.Decimal",
+            "db_type": "pg_catalog.numeric"
+          },
+          {
+            "go_type": "github.com/shopspring/decimal.NullDecimal",
+            "db_type": "pg_catalog.numeric",
+            "nullable": true
+          },
+          {
+            "go_type": "github.com/gobuffalo/nulls.Int64",
+            "db_type": "pg_catalog.int8",
+            "nullable": true
+          },
+          {
+            "go_type": "github.com/gobuffalo/nulls.Int64",
+            "column": "public.lab_tests.id",
+            "nullable": true
+          },
+          {
+            "go_type": "github.com/gobuffalo/nulls.Int64",
+            "column": "public.lab_tests.lab_test_id",
+            "nullable": true
+          },
+          {
+            "go_type": "github.com/gobuffalo/nulls.Int64",
+            "column": "public.lab_tests_packages.lab_test_id",
+            "nullable": true
+          },
+          {
+            "go_type": "github.com/gobuffalo/nulls.Int64",
+            "column": "public.packages.lab_test_id",
+            "nullable": true
+          },
+          {
+            "go_type": "github.com/gobuffalo/nulls.Int64",
+            "db_type": "pg_catalog.serial8",
+            "nullable": true
+          },
+          {
+            "go_type": "github.com/gobuffalo/nulls.Int64",
+            "db_type": "pg_catalog.interval",
+            "nullable": true
+          },
+          {
+            "go_type": "github.com/gobuffalo/nulls.Int32",
+            "db_type": "pg_catalog.int4",
+            "nullable": true
+          },
+          {
+            "go_type": "github.com/gobuffalo/nulls.Int16",
+            "db_type": "pg_catalog.int2",
+            "nullable": true
+          },
+          {
+            "go_type": "github.com/gobuffalo/nulls.Time",
+            "db_type": "timestamptz",
+            "nullable": true
+          },
+          {
+            "go_type": "github.com/gobuffalo/nulls.String",
+            "db_type": "pg_catalog.varchar",
+            "nullable": true
+          },
+          {
+              "go_type": "github.com/gobuffalo/nulls.Bool",
+              "db_type": "pg_catalog.bool",
+              "nullable": true
+          }
+        ]

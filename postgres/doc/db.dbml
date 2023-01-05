@@ -1,0 +1,301 @@
+Table users as U {
+  id bigserial [pk]
+  hashed_password varchar(64) [not null]
+  username varchar(64) [unique, not null]
+  email varchar(255) [unique, not null]
+  first_name varchar(255) [not null, default: '']
+  last_name varchar(255) [not null, default: '']
+  phone varchar(26) [unique]
+  role varchar(255) [not null, default: 'user'] // future enum
+  created_at timestamptz [not null, default: `now()`]
+  password_changed_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+
+  Indexes {
+      email [unique]
+    }
+}
+
+Table sessions {
+  id uuid [pk]
+  username varchar(64) [ref: > U.username, not null]
+  refresh_token varchar [not null]
+  user_agent varchar [not null]
+  client_ip varchar(45) [not null]
+  is_blocked boolean [not null, default: false]
+  expires_at timestamptz [not null]
+  created_at timestamptz [not null, default: `now()`]
+}
+
+Table product_categories {
+  id bigserial [pk]
+  name varchar(255) [unique, not null]
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+  // item_types ########
+}
+
+Table strains {
+  id bigserial [pk]
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+  name varchar(255) [not null, default: '']
+  type varchar(255) [not null, default: ''] // future enum
+  yield_average numeric(9,6)
+  terp_average_total numeric(9,6)
+  // change to individual terpenes
+  terp_1 varchar(255)
+  terp_1_value numeric(9,6)
+  terp_2 varchar(255)
+  terp_2_value numeric(9,6)
+  terp_3 varchar(255)
+  terp_3_value numeric(9,6)
+  terp_4 varchar(255)
+  terp_4_value numeric(9,6)
+  terp_5 varchar(255)
+  terp_5_value numeric(9,6)
+  thc_average numeric(9,6)
+  total_cannabinoid_average numeric(9,6)
+  light_dep_2022 varchar [not null, default: 'false'] // future enum
+  fall_harvest_2022 varchar [not null, default: 'false'] // future enum
+  quantity_available numeric(9,6) [not null, default: 0]
+}
+
+Table retailer_locations {
+  id bigserial [pk]
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+  name varchar(255) [not null, unique]
+  address varchar(255) [not null, default: '']
+  city varchar(255) [not null, default: '']
+  state varchar(255) [not null, default: '']
+  zip varchar(10) [not null, default: '']
+  latitude numeric(9,6) [not null, default: 90.0]
+  longitude numeric(9,6) [not null, default: 135.0]
+  note varchar(1024) [not null, default: '']
+  website varchar(2083)
+  sells_flower boolean [not null, default: false]
+  sells_prerolls boolean [not null, default: false]
+  sells_pressed_hash boolean [not null, default: false]
+}
+
+Table items {
+  id bigserial [pk]
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+  description varchar(255) [not null, default: '']
+  is_used boolean [not null, default: false]
+  // packages #######
+  item_type_id bigint [not null, ref: > item_types.id]
+  strain_id bigint [not null, ref: > strains.id]
+}
+
+Table item_types {
+  id bigserial [pk]
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+  product_form varchar(255) [not null, default: '']
+  product_modifier varchar(255) [not null, default: '']
+  // items ######
+  uom_default bigint [not null, ref: > uoms.id]
+  product_category_id bigint [not null, ref: > product_categories.id]
+}
+
+Table package_tags {
+  id bigserial [pk]
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+  tag_number varchar(24) [not null]
+  is_assigned boolean [not null, default: false]
+  is_provisional boolean [not null, default: true]
+  is_active boolean [not null, default: false]
+  assigned_package_id bigint [ref: > packages.id]
+
+  Indexes {
+    tag_number [unique]
+  }
+}
+
+Table packages {
+  id bigserial [pk]
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+  tag_id bigint [ref: > package_tags.id]
+  package_type varchar(255) [not null, default: ''] // future enum
+  is_active boolean [not null, default: true]
+  quantity numeric(19,6) [not null, default: 0]
+  notes varchar(1024) [not null, default: '']
+  packaged_date_time timestamptz [not null, default: `now()`]
+  harvest_date_time timestamptz
+  lab_testing_state varchar(255) [not null, default: 'Untested'] // future enum
+  lab_testing_state_date_time timestamptz
+  is_trade_sample boolean [not null, default: false]
+  is_testing_sample boolean [not null, default: false]
+  product_requires_remediation boolean [not null, default: false]
+  contains_remediated_product boolean [not null, default: false]
+  remediation_date_time timestamptz
+  received_date_time timestamptz
+  received_from_manifest_number varchar(255)
+  received_from_facility_license_number varchar(255)
+  received_from_facility_name varchar(255)
+  is_on_hold boolean [not null, default: false]
+  archived_date timestamptz
+  finished_date timestamptz
+  item_id bigint [ref: > items.id]
+  provisional_label varchar(255)
+  is_provisional boolean [not null, default: false]
+  is_sold boolean [not null, default: false]
+  ppu_default numeric(19,4) [not null, default: 0]
+  ppu_on_order numeric(19,4) [not null, default: 0]
+  total_package_price_on_order numeric(19,4) [not null, default: 0]
+  ppu_sold_price numeric(19,4) [not null, default: 0]
+  total_sold_price numeric(19,4) [not null, default: 0]
+  packaging_supplies_consumed boolean [not null, default: false]
+  is_line_item boolean [not null, default: false]
+  order_id bigint [ref: > orders.id]
+  uom_id bigint [ref: > uoms.id, not null]
+  facility_location_id bigint [ref: > facility_locations.id, not null, default: 1]
+
+    Indexes {
+        tag_id [unique]
+    }
+}
+
+Table source_packages_child_packages {
+  source_package_id bigint [ref: > packages.id, not null]
+  child_package_id bigint [ref: > packages.id, not null]
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+
+  Indexes {
+      source_package_id
+      child_package_id
+      (source_package_id, child_package_id)
+    }
+}
+
+Table lab_tests {
+  id bigserial [pk]
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+  test_name varchar(255) [not null, default: '']
+  batch_code varchar(255) [not null, default: '']
+  test_id_code varchar(255) [not null, default: '']
+  lab_facility_name varchar(255) [not null, default: '']
+  test_performed_date_time timestamptz [not null, default: `now()`]
+  test_completed boolean [not null, default: false]
+  overall_passed boolean [not null, default: false]
+  test_type_name varchar(255) [not null, default: '']
+  test_passed boolean [not null, default: false]
+  test_comment varchar(255) [not null, default: '']
+  thc_total_percent numeric(9,6) [not null, default: 0]
+  thc_total_value numeric(9,6) [not null, default: 0]
+  cbd_percent numeric(9,6) [not null, default: 0]
+  cbd_value numeric(9,6) [not null, default: 0]
+  terpene_total_percent numeric(9,6) [not null, default: 0]
+  terpene_total_value numeric(9,6) [not null, default: 0]
+  thc_a_percent numeric(9,6) [not null, default: 0]
+  thc_a_value numeric(9,6) [not null, default: 0]
+  delta9_thc_percent numeric(9,6) [not null, default: 0]
+  delta9_thc_value numeric(9,6) [not null, default: 0]
+  delta8_thc_percent numeric(9,6) [not null, default: 0]
+  delta8_thc_value numeric(9,6) [not null, default: 0]
+  thc_v_percent numeric(9,6) [not null, default: 0]
+  thc_v_value numeric(9,6) [not null, default: 0]
+  cbd_a_percent numeric(9,6) [not null, default: 0]
+  cbd_a_value numeric(9,6) [not null, default: 0]
+  cbn_percent numeric(9,6) [not null, default: 0]
+  cbn_value numeric(9,6) [not null, default: 0]
+  cbg_a_percent numeric(9,6) [not null, default: 0]
+  cbg_a_value numeric(9,6) [not null, default: 0]
+  cbg_percent numeric(9,6) [not null, default: 0]
+  cbg_value numeric(9,6) [not null, default: 0]
+  cbc_percent numeric(9,6) [not null, default: 0]
+  cbc_value numeric(9,6) [not null, default: 0]
+  total_cannabinoid_percent numeric(9,6) [not null, default: 0]
+  total_cannabinoid_value numeric(9,6) [not null, default: 0]
+}
+
+Table lab_tests_packages {
+  lab_test_id bigint [not null, ref: > lab_tests.id]
+  package_id bigint [not null, ref: > packages.id]
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+
+  Indexes {
+        lab_test_id
+        package_id
+        (lab_test_id, package_id)
+      }
+}
+
+Table uoms {
+  id bigserial [pk]
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+  name varchar(32) [not null, default: '']
+  abbreviation varchar(16) [not null, default: '']
+  // item_types
+  // packages
+}
+
+Table orders {
+  id bigserial [pk]
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+  scheduled_pack_date_time timestamptz [not null, default: `now()`]
+  scheduled_ship_date_time timestamptz [not null, default: `now()`]
+  scheduled_delivery_date_time timestamptz [not null, default: `now()`]
+  actual_pack_date_time timestamptz
+  actual_ship_date_time timestamptz
+  actual_delivery_date_time timestamptz
+  order_total numeric(19,4) [not null, default: 0]
+  notes varchar(1024) [not null, default: '']
+  status varchar(255) [not null, default: ''] // future enum
+  customer_name varchar(255) [not null, default: ''] // future customers model
+  // line_item_packages ######
+}
+
+Table package_adj_entries {
+  id bigserial [pk]
+  created_at timestamptz [not null, default: `now()`]
+  package_id bigint [ref: > packages.id, not null]
+  amount numeric(19,6) [not null, note: 'can be negative or positive']
+  uom_id bigint [ref: > uoms.id, not null]
+
+  Indexes {
+    package_id
+  }
+}
+
+Table package_adjustments {
+  id bigserial [pk]
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+  from_package_id bigint [not null, ref: > packages.id]
+  to_package_id bigint [not null, ref: > packages.id]
+  amount numeric(19,6) [not null, note: 'must be positive']
+  uom_id bigint [not null, ref: > uoms.id]
+
+  Indexes {
+    from_package_id
+    to_package_id
+    (from_package_id, to_package_id)
+  }
+}
+
+Table facilities {
+  id bigserial [pk]
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+  name varchar(255) [unique, not null, default: '']
+  license_number varchar(255) [unique, not null, default: '']
+}
+
+Table facility_locations {
+  id bigserial [pk]
+  created_at timestamptz [not null, default: `now()`]
+  updated_at timestamptz [not null, default: `now()`]
+  name varchar(255) [not null, default: '']
+  facility_id bigint [ref: > facilities.id, not null]
+}

@@ -18,23 +18,23 @@ dropdb:
 
 .PHONY: migrateup
 migrateup:
-	migrate -path internal/db/migration -database "$(DB_URL)" -verbose up
+	migrate -path postgres/migration -database "$(DB_URL)" -verbose up
 
 .PHONY: migrateup1
 migrateup1:
-	migrate -path internal/db/migration -database "$(DB_URL)" -verbose up 1
+	migrate -path postgres/migration -database "$(DB_URL)" -verbose up 1
 
 .PHONY: migratedown
 migratedown:
-	migrate -path internal/db/migration -database "$(DB_URL)" -verbose down
+	migrate -path postgres/migration -database "$(DB_URL)" -verbose down
 
 .PHONY: migratedown1
 migratedown1:
-	migrate -path internal/db/migration -database "$(DB_URL)" -verbose down 1
+	migrate -path postgres/migration -database "$(DB_URL)" -verbose down 1
 
 .PHONY: db_schema
 db_schema:
-	dbml2sql --postgres -o doc/schema.sql doc/db.dbml
+	dbml2sql --postgres -o postgres/doc/schema.sql postgres/doc/db.dbml
 
 .PHONY: sqlc
 sqlc:
@@ -50,7 +50,7 @@ server:
 
 .PHONY: mock
 mock:
-	mockgen -package mockdb -destination internal/db/mock/store.go github.com/earlofurl/pxthc/db/sqlc Store
+	mockgen -package mockdb -destination mock/store.go github.com/earlofurl/pxthc/db/sqlc Store
 
 .PHONY: redis
 redis:
@@ -58,4 +58,4 @@ redis:
 
 .PHONY: seed
 seed:
-	go run internal/db/seeder/seeder.go
+	go run postgres/seeder/seeder.go

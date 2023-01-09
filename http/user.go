@@ -10,7 +10,9 @@ import (
 func (s *Server) createUserHandler(w http.ResponseWriter, r *http.Request) {
 	log.Debug().Msg("User Create handler called")
 	var req pxthc.CreateUserRequest
-	err := s.readJSON(w, r, &pxthc.CreateUserRequest{})
+	log.Debug().Msgf("req: %+v", req)
+	//err := s.readJSON(w, r, &pxthc.CreateUserRequest{})
+	err := req.Bind(r.Body)
 	if err != nil {
 		pxthc.Error(w, http.StatusBadRequest, err)
 		return
@@ -46,7 +48,8 @@ func (s *Server) createUserHandler(w http.ResponseWriter, r *http.Request) {
 func (s *Server) getUserByEmailHandler(w http.ResponseWriter, r *http.Request) {
 	log.Debug().Msg("User Get By Email handler called")
 	var req pxthc.GetUserByEmailRequest
-	err := s.readJSON(w, r, &req)
+	//err := s.readJSON(w, r, &req)
+	err := req.Bind(r.Body)
 	if err != nil {
 		pxthc.Error(w, http.StatusBadRequest, err)
 		return

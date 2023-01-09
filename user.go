@@ -2,8 +2,10 @@ package pxthc
 
 import (
 	"context"
+	"encoding/json"
 	"github.com/earlofurl/pxthc/sqlc"
 	"github.com/gobuffalo/nulls"
+	"io"
 	"time"
 )
 
@@ -74,4 +76,20 @@ type UpdateUserRequest struct {
 	LastName  string       `json:"last_name" validate:"required"`
 	Phone     nulls.String `json:"phone" validate:"required"`
 	Role      string       `json:"role" validate:"required"`
+}
+
+func (r *GetUserByIDRequest) Bind(body io.ReadCloser) error {
+	return json.NewDecoder(body).Decode(r)
+}
+
+func (r *GetUserByEmailRequest) Bind(body io.ReadCloser) error {
+	return json.NewDecoder(body).Decode(r)
+}
+
+func (r *UpdateUserRequest) Bind(body io.ReadCloser) error {
+	return json.NewDecoder(body).Decode(r)
+}
+
+func (r *CreateUserRequest) Bind(body io.ReadCloser) error {
+	return json.NewDecoder(body).Decode(r)
 }

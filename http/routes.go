@@ -16,6 +16,7 @@ func (s *Server) InitRoutes() {
 	s.initFacility()
 	s.initFacilityLocation()
 	s.initItemType()
+	s.initPackageTag()
 }
 
 func (s *Server) initVersion() {
@@ -104,5 +105,16 @@ func (s *Server) initItemType() {
 		router.Post("/", s.createItemTypeHandler)
 		router.Put("/", s.updateItemTypeHandler)
 		router.Delete("/", s.deleteItemTypeHandler)
+	})
+}
+
+func (s *Server) initPackageTag() {
+	s.router.Route("/api/package-tag", func(router chi.Router) {
+		router.Use(JsonMiddleware)
+
+		router.Get("/", s.getAllPackageTagsHandler)
+		router.Get("/{id}", s.getPackageTagByIDHandler)
+		router.Get("/tag/{tag}", s.getPackageTagByTagNumberHandler)
+		router.Put("/", s.updatePackageTagHandler)
 	})
 }

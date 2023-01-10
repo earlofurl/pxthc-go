@@ -4,7 +4,7 @@ INSERT INTO package_tags (tag_number, is_assigned, is_provisional, is_active, as
 VALUES ($1, $2, $3, $4, $5)
 RETURNING *;
 
--- name: GetPackageTag :one
+-- name: GetPackageTagByID :one
 -- description: Get a package tag by ID
 SELECT *
 FROM package_tags
@@ -15,7 +15,7 @@ LIMIT 1;
 -- description: Get a package tag by tag number
 SELECT *
 FROM package_tags
-WHERE tag_number = $1
+WHERE tag_number ILIKE $1
 LIMIT 1;
 
 -- name: ListPackageTags :many

@@ -48,7 +48,7 @@ func (q *Queries) CreatePackageTag(ctx context.Context, arg *CreatePackageTagPar
 	return &i, err
 }
 
-const getPackageTag = `-- name: GetPackageTag :one
+const getPackageTagByID = `-- name: GetPackageTagByID :one
 SELECT id, created_at, updated_at, tag_number, is_assigned, is_provisional, is_active, assigned_package_id
 FROM package_tags
 WHERE id = $1
@@ -56,8 +56,8 @@ LIMIT 1
 `
 
 // description: Get a package tag by ID
-func (q *Queries) GetPackageTag(ctx context.Context, id int64) (*PackageTag, error) {
-	row := q.db.QueryRowContext(ctx, getPackageTag, id)
+func (q *Queries) GetPackageTagByID(ctx context.Context, id int64) (*PackageTag, error) {
+	row := q.db.QueryRowContext(ctx, getPackageTagByID, id)
 	var i PackageTag
 	err := row.Scan(
 		&i.ID,
@@ -75,7 +75,7 @@ func (q *Queries) GetPackageTag(ctx context.Context, id int64) (*PackageTag, err
 const getPackageTagByTagNumber = `-- name: GetPackageTagByTagNumber :one
 SELECT id, created_at, updated_at, tag_number, is_assigned, is_provisional, is_active, assigned_package_id
 FROM package_tags
-WHERE tag_number = $1
+WHERE tag_number ILIKE $1
 LIMIT 1
 `
 

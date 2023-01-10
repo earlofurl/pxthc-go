@@ -73,6 +73,7 @@ type Server struct {
 	facilityService         pxthc.FacilityService
 	facilityLocationService pxthc.FacilityLocationService
 	itemTypeService         pxthc.ItemTypeService
+	packageTagService       pxthc.PackageTagService
 }
 
 type Options func(opts *Server) error
@@ -171,6 +172,7 @@ func (s *Server) newServices() {
 	s.facilityService = postgres.NewFacilityService(&s.store)
 	s.facilityLocationService = postgres.NewFacilityLocationService(&s.store)
 	s.itemTypeService = postgres.NewItemTypeService(&s.store)
+	s.packageTagService = postgres.NewPackageTagService(&s.store)
 }
 
 // setGlobalMiddleware sets the global middleware for the chi router to apply to all routes.

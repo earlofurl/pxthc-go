@@ -88,7 +88,7 @@ type Querier interface {
 	// description: Get a package by tag id
 	GetPackageByTagID(ctx context.Context, tagID nulls.Int64) (*Package, error)
 	// description: Get a package tag by ID
-	GetPackageTag(ctx context.Context, id int64) (*PackageTag, error)
+	GetPackageTagByID(ctx context.Context, id int64) (*PackageTag, error)
 	// description: Get a package tag by tag number
 	GetPackageTagByTagNumber(ctx context.Context, tagNumber string) (*PackageTag, error)
 	// description: Get a product category by ID

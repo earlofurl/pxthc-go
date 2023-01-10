@@ -4,11 +4,19 @@ INSERT INTO facilities (name, license_number)
 VALUES ($1, $2)
 RETURNING *;
 
--- name: GetFacility :one
+-- name: GetFacilityByID :one
 -- description: Get a facility by ID
 SELECT *
 FROM facilities
-WHERE id = $1;
+WHERE id = $1
+LIMIT 1;
+
+-- name: GetFacilityByName :one
+-- description: Get a facility by name
+SELECT *
+FROM facilities
+WHERE name ILIKE $1
+LIMIT 1;
 
 -- name: ListFacilities :many
 -- description: List all facilities

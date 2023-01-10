@@ -4,11 +4,19 @@ INSERT INTO facility_locations (name, facility_id)
 VALUES ($1, $2)
 RETURNING *;
 
--- name: GetFacilityLocation :one
+-- name: GetFacilityLocationByID :one
 -- description: Get a location within a facility by ID
 SELECT *
 FROM facility_locations
-WHERE id = $1;
+WHERE id = $1
+LIMIT 1;
+
+-- name: GetFacilityLocationByName :one
+-- description: Get a location within a facility by name
+SELECT *
+FROM facility_locations
+WHERE name ILIKE $1
+LIMIT 1;
 
 -- name: ListFacilityLocations :many
 -- description: List all locations within facilities

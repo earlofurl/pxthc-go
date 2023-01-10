@@ -48,15 +48,37 @@ func (q *Queries) DeleteFacility(ctx context.Context, id int64) error {
 	return err
 }
 
-const getFacility = `-- name: GetFacility :one
+const getFacilityByID = `-- name: GetFacilityByID :one
 SELECT id, created_at, updated_at, name, license_number
 FROM facilities
 WHERE id = $1
+LIMIT 1
 `
 
 // description: Get a facility by ID
-func (q *Queries) GetFacility(ctx context.Context, id int64) (*Facility, error) {
-	row := q.db.QueryRowContext(ctx, getFacility, id)
+func (q *Queries) GetFacilityByID(ctx context.Context, id int64) (*Facility, error) {
+	row := q.db.QueryRowContext(ctx, getFacilityByID, id)
+	var i Facility
+	err := row.Scan(
+		&i.ID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.Name,
+		&i.LicenseNumber,
+	)
+	return &i, err
+}
+
+const getFacilityByName = `-- name: GetFacilityByName :one
+SELECT id, created_at, updated_at, name, license_number
+FROM facilities
+WHERE name ILIKE $1
+LIMIT 1
+`
+
+// description: Get a facility by name
+func (q *Queries) GetFacilityByName(ctx context.Context, name string) (*Facility, error) {
+	row := q.db.QueryRowContext(ctx, getFacilityByName, name)
 	var i Facility
 	err := row.Scan(
 		&i.ID,

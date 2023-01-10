@@ -12,6 +12,9 @@ func (s *Server) InitRoutes() {
 	s.initUser()
 	s.initUom()
 	s.initStrain()
+	s.initProductCategory()
+	s.initFacility()
+	s.initFacilityLocation()
 }
 
 func (s *Server) initVersion() {
@@ -52,5 +55,41 @@ func (s *Server) initStrain() {
 		router.Get("/{id}", s.getStrainByIDHandler)
 		router.Get("/name/{name}", s.getStrainByNameHandler)
 		router.Post("/", s.createStrainHandler)
+	})
+}
+
+func (s *Server) initProductCategory() {
+	s.router.Route("/api/product-category", func(router chi.Router) {
+		router.Use(JsonMiddleware)
+
+		router.Get("/", s.getAllProductCategoriesHandler)
+		router.Get("/{id}", s.getProductCategoryByIDHandler)
+		router.Get("/name/{name}", s.getProductCategoryByNameHandler)
+	})
+}
+
+func (s *Server) initFacility() {
+	s.router.Route("/api/facility", func(router chi.Router) {
+		router.Use(JsonMiddleware)
+
+		router.Get("/", s.getAllFacilitiesHandler)
+		router.Get("/{id}", s.getFacilityByIDHandler)
+		router.Get("/name/{name}", s.getFacilityByNameHandler)
+		router.Post("/", s.createFacilityHandler)
+		router.Put("/", s.updateFacilityHandler)
+		router.Delete("/", s.deleteFacilityHandler)
+	})
+}
+
+func (s *Server) initFacilityLocation() {
+	s.router.Route("/api/facility-location", func(router chi.Router) {
+		router.Use(JsonMiddleware)
+
+		router.Get("/", s.getAllFacilityLocationsHandler)
+		router.Get("/{id}", s.getFacilityLocationByIDHandler)
+		router.Get("/name/{name}", s.getFacilityLocationByNameHandler)
+		router.Post("/", s.createFacilityLocationHandler)
+		router.Put("/", s.updateFacilityLocationHandler)
+		router.Delete("/", s.deleteFacilityLocationHandler)
 	})
 }

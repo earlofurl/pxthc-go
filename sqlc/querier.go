@@ -39,8 +39,6 @@ type Querier interface {
 	CreatePackageAdjustment(ctx context.Context, arg *CreatePackageAdjustmentParams) (*PackageAdjustment, error)
 	// description: Create a package tag
 	CreatePackageTag(ctx context.Context, arg *CreatePackageTagParams) (*PackageTag, error)
-	// description: Create a new product category
-	CreateProductCategory(ctx context.Context, name string) (*ProductCategory, error)
 	CreateSession(ctx context.Context, arg *CreateSessionParams) (*Session, error)
 	// description: Create a strain
 	CreateStrain(ctx context.Context, arg *CreateStrainParams) (*Strain, error)
@@ -61,14 +59,16 @@ type Querier interface {
 	DeleteOrder(ctx context.Context, id int64) error
 	// description: Delete a package
 	DeletePackage(ctx context.Context, id int64) error
-	// description: Delete a product category
-	DeleteProductCategory(ctx context.Context, id int64) error
 	// description: Delete a strain by ID
 	DeleteStrain(ctx context.Context, id int64) error
 	// description: Get a facility by ID
-	GetFacility(ctx context.Context, id int64) (*Facility, error)
+	GetFacilityByID(ctx context.Context, id int64) (*Facility, error)
+	// description: Get a facility by name
+	GetFacilityByName(ctx context.Context, name string) (*Facility, error)
 	// description: Get a location within a facility by ID
-	GetFacilityLocation(ctx context.Context, id int64) (*FacilityLocation, error)
+	GetFacilityLocationByID(ctx context.Context, id int64) (*FacilityLocation, error)
+	// description: Get a location within a facility by name
+	GetFacilityLocationByName(ctx context.Context, name string) (*FacilityLocation, error)
 	// description: Get an item by ID
 	GetItem(ctx context.Context, id int64) (*Item, error)
 	// description: Get an item type by id
@@ -92,7 +92,7 @@ type Querier interface {
 	// description: Get a package tag by tag number
 	GetPackageTagByTagNumber(ctx context.Context, tagNumber string) (*PackageTag, error)
 	// description: Get a product category by ID
-	GetProductCategory(ctx context.Context, id int64) (*ProductCategory, error)
+	GetProductCategoryByID(ctx context.Context, id int64) (*ProductCategory, error)
 	// description: Get a product category by name
 	GetProductCategoryByName(ctx context.Context, name string) (*ProductCategory, error)
 	GetSession(ctx context.Context, id uuid.UUID) (*Session, error)
@@ -155,8 +155,6 @@ type Querier interface {
 	UpdatePackage(ctx context.Context, arg *UpdatePackageParams) (*Package, error)
 	// description: Update a package tag
 	UpdatePackageTag(ctx context.Context, arg *UpdatePackageTagParams) (*PackageTag, error)
-	// description: Update a product category
-	UpdateProductCategory(ctx context.Context, arg *UpdateProductCategoryParams) (*ProductCategory, error)
 	// description: Update a strain
 	UpdateStrain(ctx context.Context, arg *UpdateStrainParams) (*Strain, error)
 	UpdateUser(ctx context.Context, arg *UpdateUserParams) (*User, error)

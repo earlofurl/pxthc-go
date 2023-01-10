@@ -66,9 +66,12 @@ type Server struct {
 	// Servics used by the various HTTP routes.
 	//AuthService           wtf.AuthService
 	//EventService          wtf.EventService
-	userService   pxthc.UserService
-	uomService    pxthc.UomService
-	strainService pxthc.StrainService
+	userService             pxthc.UserService
+	uomService              pxthc.UomService
+	strainService           pxthc.StrainService
+	productCategoryService  pxthc.ProductCategoryService
+	facilityService         pxthc.FacilityService
+	facilityLocationService pxthc.FacilityLocationService
 }
 
 type Options func(opts *Server) error
@@ -163,6 +166,9 @@ func (s *Server) newServices() {
 	s.userService = postgres.NewUserService(&s.store)
 	s.uomService = postgres.NewUomService(&s.store)
 	s.strainService = postgres.NewStrainService(&s.store)
+	s.productCategoryService = postgres.NewProductCategoryService(&s.store)
+	s.facilityService = postgres.NewFacilityService(&s.store)
+	s.facilityLocationService = postgres.NewFacilityLocationService(&s.store)
 }
 
 // setGlobalMiddleware sets the global middleware for the chi router to apply to all routes.

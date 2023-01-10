@@ -18,6 +18,7 @@ func (s *Server) InitRoutes() {
 	s.initItemType()
 	s.initPackageTag()
 	s.initItem()
+	s.initLab()
 }
 
 func (s *Server) initVersion() {
@@ -129,5 +130,17 @@ func (s *Server) initItem() {
 		router.Post("/", s.createItemHandler)
 		router.Put("/", s.updateItemHandler)
 		router.Delete("/", s.deleteItemHandler)
+	})
+}
+
+func (s *Server) initLab() {
+	s.router.Route("/api/lab", func(router chi.Router) {
+		router.Use(JsonMiddleware)
+
+		router.Get("/", s.getAllLabTestsHandler)
+		router.Get("/{id}", s.getLabTestByIDHandler)
+		router.Post("/", s.createLabTestHandler)
+		router.Put("/", s.updateLabTestHandler)
+		router.Delete("/", s.deleteLabTestHandler)
 	})
 }

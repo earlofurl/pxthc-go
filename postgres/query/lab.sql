@@ -1,3 +1,16 @@
+-- name: GetLabTestByID :one
+-- description: Get a lab test by ID
+SELECT *
+FROM lab_tests
+WHERE id = $1
+LIMIT 1;
+
+-- name: ListLabTests :many
+-- description: List all lab tests
+SELECT *
+FROM lab_tests
+ORDER BY created_at;
+
 -- name: CreateLabTest :one
 -- description: Create a lab test
 INSERT INTO lab_tests (test_name,
@@ -38,19 +51,6 @@ INSERT INTO lab_tests (test_name,
 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22, $23, $24,
         $25, $26, $27, $28, $29, $30, $31, $32, $33, $34, $35)
 RETURNING *;
-
--- name: GetLabTest :one
--- description: Get a lab test by ID
-SELECT *
-FROM lab_tests
-WHERE id = $1
-LIMIT 1;
-
--- name: ListLabTests :many
--- description: List all lab tests
-SELECT *
-FROM lab_tests
-ORDER BY created_at;
 
 -- name: UpdateLabTest :one
 -- description: Update a lab test

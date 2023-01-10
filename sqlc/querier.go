@@ -74,7 +74,7 @@ type Querier interface {
 	// description: Get an item type by id
 	GetItemTypeByID(ctx context.Context, id int64) (*ItemType, error)
 	// description: Get a lab test by ID
-	GetLabTest(ctx context.Context, id nulls.Int64) (*LabTest, error)
+	GetLabTestByID(ctx context.Context, id nulls.Int64) (*LabTest, error)
 	// description: Get a lab test connected to package by package id in lab_tests_packages junction table
 	GetLabTestByPackageID(ctx context.Context, packageID int64) (*LabTestsPackage, error)
 	// description: Get a single order by id

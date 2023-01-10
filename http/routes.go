@@ -28,6 +28,7 @@ func (s *Server) initUser() {
 
 		router.Get("/", s.getUserByEmailHandler)
 		router.Post("/", s.createUserHandler)
+		router.Post("/login", s.loginUserHandler)
 		//router.Get("/{id}", s.UserService.FindUserById)
 		//router.Get("/email", s.UserService.FindUserByEmail)
 		//router.Put("/{id}", s.UserService.UpdateUser)

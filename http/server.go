@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"github.com/earlofurl/pxthc/token"
 	_ "github.com/lib/pq"
 	"github.com/rogpeppe/go-internal/modfile"
 	"math"
@@ -50,6 +51,7 @@ type Server struct {
 	ln         net.Listener
 	httpServer *http.Server
 	router     *chi.Mux
+	tokenMaker token.Maker
 	//sc     *securecookie.SecureCookie
 
 	// Bind address & domain for the server's listener.
@@ -98,6 +100,7 @@ func (s *Server) Init(version string) {
 	s.Version = version
 	//s.runDBMigration(s.cfg.MigrationURL, s.cfg.DBSource)
 	s.newStore()
+	s.newTokenMaker()
 	//s.newValidator()
 	s.newRouter()
 	s.newServices()
@@ -111,6 +114,14 @@ func (s *Server) newStore() {
 		log.Fatal().Err(err).Msg("cannot connect to db")
 	}
 	s.store = sqlc.NewStore(conn)
+}
+
+func (s *Server) newTokenMaker() {
+	tokenMaker, err := token.NewPasetoMaker(s.cfg.TokenSymmetricKey)
+	if err != nil {
+		log.Fatal().Err(err).Msg("cannot create token maker")
+	}
+	s.tokenMaker = tokenMaker
 }
 
 func openDbConn(cfg *config.Config) (*sql.DB, error) {

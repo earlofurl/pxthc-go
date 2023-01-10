@@ -7,7 +7,7 @@ INSERT INTO item_types (product_form,
 VALUES ($1, $2, $3, $4)
 RETURNING *;
 
--- name: GetItemType :one
+-- name: GetItemTypeByID :one
 -- description: Get an item type by id
 SELECT *
 FROM item_types

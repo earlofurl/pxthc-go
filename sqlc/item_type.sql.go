@@ -60,7 +60,7 @@ func (q *Queries) DeleteItemType(ctx context.Context, id int64) error {
 	return err
 }
 
-const getItemType = `-- name: GetItemType :one
+const getItemTypeByID = `-- name: GetItemTypeByID :one
 SELECT id, created_at, updated_at, product_form, product_modifier, uom_default, product_category_id
 FROM item_types
 WHERE id = $1
@@ -68,8 +68,8 @@ LIMIT 1
 `
 
 // description: Get an item type by id
-func (q *Queries) GetItemType(ctx context.Context, id int64) (*ItemType, error) {
-	row := q.db.QueryRowContext(ctx, getItemType, id)
+func (q *Queries) GetItemTypeByID(ctx context.Context, id int64) (*ItemType, error) {
+	row := q.db.QueryRowContext(ctx, getItemTypeByID, id)
 	var i ItemType
 	err := row.Scan(
 		&i.ID,

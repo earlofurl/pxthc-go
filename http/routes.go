@@ -15,6 +15,7 @@ func (s *Server) InitRoutes() {
 	s.initProductCategory()
 	s.initFacility()
 	s.initFacilityLocation()
+	s.initItemType()
 }
 
 func (s *Server) initVersion() {
@@ -91,5 +92,17 @@ func (s *Server) initFacilityLocation() {
 		router.Post("/", s.createFacilityLocationHandler)
 		router.Put("/", s.updateFacilityLocationHandler)
 		router.Delete("/", s.deleteFacilityLocationHandler)
+	})
+}
+
+func (s *Server) initItemType() {
+	s.router.Route("/api/item-type", func(router chi.Router) {
+		router.Use(JsonMiddleware)
+
+		router.Get("/", s.getAllItemTypesHandler)
+		router.Get("/{id}", s.getItemTypeByIDHandler)
+		router.Post("/", s.createItemTypeHandler)
+		router.Put("/", s.updateItemTypeHandler)
+		router.Delete("/", s.deleteItemTypeHandler)
 	})
 }

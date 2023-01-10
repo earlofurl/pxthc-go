@@ -63,7 +63,7 @@ type Server struct {
 	HashKey  string
 	BlockKey string
 
-	// Servics used by the various HTTP routes.
+	// Services used by the various HTTP routes.
 	//AuthService           wtf.AuthService
 	//EventService          wtf.EventService
 	userService             pxthc.UserService
@@ -72,6 +72,7 @@ type Server struct {
 	productCategoryService  pxthc.ProductCategoryService
 	facilityService         pxthc.FacilityService
 	facilityLocationService pxthc.FacilityLocationService
+	itemTypeService         pxthc.ItemTypeService
 }
 
 type Options func(opts *Server) error
@@ -169,6 +170,7 @@ func (s *Server) newServices() {
 	s.productCategoryService = postgres.NewProductCategoryService(&s.store)
 	s.facilityService = postgres.NewFacilityService(&s.store)
 	s.facilityLocationService = postgres.NewFacilityLocationService(&s.store)
+	s.itemTypeService = postgres.NewItemTypeService(&s.store)
 }
 
 // setGlobalMiddleware sets the global middleware for the chi router to apply to all routes.

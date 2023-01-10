@@ -97,7 +97,9 @@ type Querier interface {
 	GetProductCategoryByName(ctx context.Context, name string) (*ProductCategory, error)
 	GetSession(ctx context.Context, id uuid.UUID) (*Session, error)
 	// description: Get a strain by ID
-	GetStrain(ctx context.Context, id int64) (*Strain, error)
+	GetStrainByID(ctx context.Context, id int64) (*Strain, error)
+	// description: Get a strain by name
+	GetStrainByName(ctx context.Context, name string) (*Strain, error)
 	// description: Get a UOM by ID
 	GetUomByID(ctx context.Context, id int64) (*Uom, error)
 	// description: Get a UOM by name

@@ -22,11 +22,18 @@ INSERT INTO strains (name,
 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)
 RETURNING *;
 
--- name: GetStrain :one
+-- name: GetStrainByID :one
 -- description: Get a strain by ID
 SELECT *
 FROM strains
 WHERE id = $1
+LIMIT 1;
+
+-- name: GetStrainByName :one
+-- description: Get a strain by name
+SELECT *
+FROM strains
+WHERE name ILIKE $1
 LIMIT 1;
 
 -- name: ListStrains :many

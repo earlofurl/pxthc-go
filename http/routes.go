@@ -11,6 +11,7 @@ func (s *Server) InitRoutes() {
 	//s.initSwagger()
 	s.initUser()
 	s.initUom()
+	s.initStrain()
 }
 
 func (s *Server) initVersion() {
@@ -40,5 +41,16 @@ func (s *Server) initUom() {
 		router.Get("/", s.getAllUomsHandler)
 		router.Get("/{id}", s.getUomByIDHandler)
 		router.Get("/name/{name}", s.getUomByNameHandler)
+	})
+}
+
+func (s *Server) initStrain() {
+	s.router.Route("/api/strain", func(router chi.Router) {
+		router.Use(JsonMiddleware)
+
+		router.Get("/", s.getAllStrainsHandler)
+		router.Get("/{id}", s.getStrainByIDHandler)
+		router.Get("/name/{name}", s.getStrainByNameHandler)
+		router.Post("/", s.createStrainHandler)
 	})
 }

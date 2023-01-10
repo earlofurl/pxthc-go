@@ -121,7 +121,7 @@ func (q *Queries) DeleteStrain(ctx context.Context, id int64) error {
 	return err
 }
 
-const getStrain = `-- name: GetStrain :one
+const getStrainByID = `-- name: GetStrainByID :one
 SELECT id, created_at, updated_at, name, type, yield_average, terp_average_total, terp_1, terp_1_value, terp_2, terp_2_value, terp_3, terp_3_value, terp_4, terp_4_value, terp_5, terp_5_value, thc_average, total_cannabinoid_average, light_dep_2022, fall_harvest_2022, quantity_available
 FROM strains
 WHERE id = $1
@@ -129,8 +129,46 @@ LIMIT 1
 `
 
 // description: Get a strain by ID
-func (q *Queries) GetStrain(ctx context.Context, id int64) (*Strain, error) {
-	row := q.db.QueryRowContext(ctx, getStrain, id)
+func (q *Queries) GetStrainByID(ctx context.Context, id int64) (*Strain, error) {
+	row := q.db.QueryRowContext(ctx, getStrainByID, id)
+	var i Strain
+	err := row.Scan(
+		&i.ID,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.Name,
+		&i.Type,
+		&i.YieldAverage,
+		&i.TerpAverageTotal,
+		&i.Terp1,
+		&i.Terp1Value,
+		&i.Terp2,
+		&i.Terp2Value,
+		&i.Terp3,
+		&i.Terp3Value,
+		&i.Terp4,
+		&i.Terp4Value,
+		&i.Terp5,
+		&i.Terp5Value,
+		&i.ThcAverage,
+		&i.TotalCannabinoidAverage,
+		&i.LightDep2022,
+		&i.FallHarvest2022,
+		&i.QuantityAvailable,
+	)
+	return &i, err
+}
+
+const getStrainByName = `-- name: GetStrainByName :one
+SELECT id, created_at, updated_at, name, type, yield_average, terp_average_total, terp_1, terp_1_value, terp_2, terp_2_value, terp_3, terp_3_value, terp_4, terp_4_value, terp_5, terp_5_value, thc_average, total_cannabinoid_average, light_dep_2022, fall_harvest_2022, quantity_available
+FROM strains
+WHERE name ILIKE $1
+LIMIT 1
+`
+
+// description: Get a strain by name
+func (q *Queries) GetStrainByName(ctx context.Context, name string) (*Strain, error) {
+	row := q.db.QueryRowContext(ctx, getStrainByName, name)
 	var i Strain
 	err := row.Scan(
 		&i.ID,

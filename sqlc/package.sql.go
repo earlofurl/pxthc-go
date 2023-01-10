@@ -74,7 +74,9 @@ func (q *Queries) AddPackageQuantity(ctx context.Context, arg *AddPackageQuantit
 }
 
 const assignSourcePackageChildPackage = `-- name: AssignSourcePackageChildPackage :one
-INSERT INTO source_packages_child_packages (source_package_id, child_package_id) VALUES ($1, $2) RETURNING source_package_id, child_package_id, created_at, updated_at
+INSERT INTO source_packages_child_packages (source_package_id, child_package_id)
+VALUES ($1, $2)
+RETURNING source_package_id, child_package_id, created_at, updated_at
 `
 
 type AssignSourcePackageChildPackageParams struct {
@@ -303,7 +305,10 @@ func (q *Queries) DeletePackage(ctx context.Context, id int64) error {
 }
 
 const getLabTestByPackageID = `-- name: GetLabTestByPackageID :one
-SELECT lab_test_id, package_id, created_at, updated_at FROM lab_tests_packages WHERE package_id = $1 LIMIT 1
+SELECT lab_test_id, package_id, created_at, updated_at
+FROM lab_tests_packages
+WHERE package_id = $1
+LIMIT 1
 `
 
 // description: Get a lab test connected to package by package id in lab_tests_packages junction table
@@ -437,10 +442,10 @@ SELECT p.id, p.created_at, p.updated_at, p.tag_id, p.package_type, p.is_active, 
        it.product_modifier,
        s.name         as strain_name,
        s.type         as strain_type,
-       lt.id as lab_test_id,
+       lt.id          as lab_test_id,
        lt.id, lt.created_at, lt.updated_at, lt.test_name, lt.batch_code, lt.test_id_code, lt.lab_facility_name, lt.test_performed_date_time, lt.test_completed, lt.overall_passed, lt.test_type_name, lt.test_passed, lt.test_comment, lt.thc_total_percent, lt.thc_total_value, lt.cbd_percent, lt.cbd_value, lt.terpene_total_percent, lt.terpene_total_value, lt.thc_a_percent, lt.thc_a_value, lt.delta9_thc_percent, lt.delta9_thc_value, lt.delta8_thc_percent, lt.delta8_thc_value, lt.thc_v_percent, lt.thc_v_value, lt.cbd_a_percent, lt.cbd_a_value, lt.cbn_percent, lt.cbn_value, lt.cbg_a_percent, lt.cbg_a_value, lt.cbg_percent, lt.cbg_value, lt.cbc_percent, lt.cbc_value, lt.total_cannabinoid_percent, lt.total_cannabinoid_value,
-       fl.id as location_id,
-       fl.name as location_name
+       fl.id          as location_id,
+       fl.name        as location_name
 FROM packages p
          INNER JOIN package_tags pt ON p.tag_id = pt.id
          INNER JOIN uoms u ON p.uom_id = u.id
@@ -668,10 +673,10 @@ SELECT p.id, p.created_at, p.updated_at, p.tag_id, p.package_type, p.is_active, 
        it.product_modifier,
        s.name         as strain_name,
        s.type         as strain_type,
-       lt.id as lab_test_id,
+       lt.id          as lab_test_id,
        lt.id, lt.created_at, lt.updated_at, lt.test_name, lt.batch_code, lt.test_id_code, lt.lab_facility_name, lt.test_performed_date_time, lt.test_completed, lt.overall_passed, lt.test_type_name, lt.test_passed, lt.test_comment, lt.thc_total_percent, lt.thc_total_value, lt.cbd_percent, lt.cbd_value, lt.terpene_total_percent, lt.terpene_total_value, lt.thc_a_percent, lt.thc_a_value, lt.delta9_thc_percent, lt.delta9_thc_value, lt.delta8_thc_percent, lt.delta8_thc_value, lt.thc_v_percent, lt.thc_v_value, lt.cbd_a_percent, lt.cbd_a_value, lt.cbn_percent, lt.cbn_value, lt.cbg_a_percent, lt.cbg_a_value, lt.cbg_percent, lt.cbg_value, lt.cbc_percent, lt.cbc_value, lt.total_cannabinoid_percent, lt.total_cannabinoid_value,
-       fl.id as location_id,
-       fl.name as location_name
+       fl.id          as location_id,
+       fl.name        as location_name
 FROM packages p
          INNER JOIN package_tags pt ON p.tag_id = pt.id
          INNER JOIN uoms u ON p.uom_id = u.id
@@ -982,7 +987,8 @@ SET tag_id                                = $1,
     is_line_item                          = $31,
     order_id                              = $32,
     uom_id                                = $33,
-    is_active                             = $34
+    is_active                             = $34,
+    updated_at                            = NOW()
 WHERE id = $35
 RETURNING id, created_at, updated_at, tag_id, package_type, is_active, quantity, notes, packaged_date_time, harvest_date_time, lab_testing_state, lab_testing_state_date_time, is_trade_sample, is_testing_sample, product_requires_remediation, contains_remediated_product, remediation_date_time, received_date_time, received_from_manifest_number, received_from_facility_license_number, received_from_facility_name, is_on_hold, archived_date, finished_date, item_id, provisional_label, is_provisional, is_sold, ppu_default, ppu_on_order, total_package_price_on_order, ppu_sold_price, total_sold_price, packaging_supplies_consumed, is_line_item, order_id, uom_id, facility_location_id
 `

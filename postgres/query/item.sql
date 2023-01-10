@@ -4,7 +4,7 @@ INSERT INTO items (description, is_used, item_type_id, strain_id)
 VALUES ($1, $2, $3, $4)
 RETURNING *;
 
--- name: GetItem :one
+-- name: GetItemByID :one
 -- description: Get an item by ID
 SELECT *
 FROM items
@@ -25,7 +25,8 @@ UPDATE items
 SET description  = COALESCE(sqlc.narg(description), description),
     is_used      = COALESCE(sqlc.narg(is_used), is_used),
     item_type_id = COALESCE(sqlc.narg(item_type_id), item_type_id),
-    strain_id    = COALESCE(sqlc.narg(strain_id), strain_id)
+    strain_id    = COALESCE(sqlc.narg(strain_id), strain_id),
+    updated_at   = NOW()
 WHERE id = sqlc.arg(id)
 RETURNING *;
 

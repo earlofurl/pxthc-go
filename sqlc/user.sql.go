@@ -114,7 +114,8 @@ SET hashed_password     = COALESCE($1, hashed_password),
     last_name           = COALESCE($4, last_name),
     email               = COALESCE($5, email),
     phone               = COALESCE($6, phone),
-    role                = COALESCE($7, role)
+    role                = COALESCE($7, role),
+    updated_at          = NOW()
 WHERE username = $8
 RETURNING id, hashed_password, username, email, first_name, last_name, phone, role, created_at, password_changed_at, updated_at
 `

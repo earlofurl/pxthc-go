@@ -163,7 +163,8 @@ SET scheduled_pack_date_time     = COALESCE($1, scheduled_pack_date_time),
     order_total                  = COALESCE($7, order_total),
     notes                        = COALESCE($8, notes),
     status                       = COALESCE($9, status),
-    customer_name                = COALESCE($10, customer_name)
+    customer_name                = COALESCE($10, customer_name),
+    updated_at                   = NOW()
 WHERE id = $11
 RETURNING id, created_at, updated_at, scheduled_pack_date_time, scheduled_ship_date_time, scheduled_delivery_date_time, actual_pack_date_time, actual_ship_date_time, actual_delivery_date_time, order_total, notes, status, customer_name
 `

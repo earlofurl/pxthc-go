@@ -27,7 +27,8 @@ FROM facilities;
 -- description: Update a facility by ID
 UPDATE facilities
 SET name           = COALESCE(sqlc.narg(name), name),
-    license_number = COALESCE(sqlc.narg(license_number), license_number)
+    license_number = COALESCE(sqlc.narg(license_number), license_number),
+    updated_at     = NOW()
 WHERE id = sqlc.arg(id)
 RETURNING *;
 

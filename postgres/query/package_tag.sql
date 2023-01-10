@@ -32,6 +32,7 @@ UPDATE package_tags
 SET is_assigned         = COALESCE(sqlc.narg(is_assigned), is_assigned),
     is_provisional      = COALESCE(sqlc.narg(is_provisional), is_provisional),
     is_active           = COALESCE(sqlc.narg(is_active), is_active),
-    assigned_package_id = COALESCE(sqlc.narg(assigned_package_id), assigned_package_id)
+    assigned_package_id = COALESCE(sqlc.narg(assigned_package_id), assigned_package_id),
+    updated_at          = NOW()
 WHERE id = sqlc.arg(id)
 RETURNING *;

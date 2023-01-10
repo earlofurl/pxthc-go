@@ -148,7 +148,8 @@ UPDATE package_tags
 SET is_assigned         = COALESCE($1, is_assigned),
     is_provisional      = COALESCE($2, is_provisional),
     is_active           = COALESCE($3, is_active),
-    assigned_package_id = COALESCE($4, assigned_package_id)
+    assigned_package_id = COALESCE($4, assigned_package_id),
+    updated_at          = NOW()
 WHERE id = $5
 RETURNING id, created_at, updated_at, tag_number, is_assigned, is_provisional, is_active, assigned_package_id
 `

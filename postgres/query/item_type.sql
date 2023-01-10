@@ -29,7 +29,7 @@ SET product_form        = COALESCE(sqlc.narg(product_form), product_form),
     product_category_id = COALESCE(sqlc.narg(product_category_id), product_category_id),
     updated_at          = NOW()
 WHERE id = sqlc.arg(id)
-    RETURNING *;
+RETURNING *;
 
 -- name: DeleteItemType :exec
 -- description: Delete an item type by ID

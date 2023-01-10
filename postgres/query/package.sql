@@ -97,10 +97,10 @@ SELECT p.*,
        it.product_modifier,
        s.name         as strain_name,
        s.type         as strain_type,
-       lt.id as lab_test_id,
+       lt.id          as lab_test_id,
        lt.*,
-       fl.id as location_id,
-       fl.name as location_name
+       fl.id          as location_id,
+       fl.name        as location_name
 FROM packages p
          INNER JOIN package_tags pt ON p.tag_id = pt.id
          INNER JOIN uoms u ON p.uom_id = u.id
@@ -124,10 +124,10 @@ SELECT p.*,
        it.product_modifier,
        s.name         as strain_name,
        s.type         as strain_type,
-       lt.id as lab_test_id,
+       lt.id          as lab_test_id,
        lt.*,
-       fl.id as location_id,
-       fl.name as location_name
+       fl.id          as location_id,
+       fl.name        as location_name
 FROM packages p
          INNER JOIN package_tags pt ON p.tag_id = pt.id
          INNER JOIN uoms u ON p.uom_id = u.id
@@ -174,7 +174,8 @@ SET tag_id                                = $1,
     is_line_item                          = $31,
     order_id                              = $32,
     uom_id                                = $33,
-    is_active                             = $34
+    is_active                             = $34,
+    updated_at                            = NOW()
 WHERE id = $35
 RETURNING *;
 
@@ -202,8 +203,13 @@ WHERE id = $1;
 
 -- name: AssignSourcePackageChildPackage :one
 -- description: Assign a source package child package relationship on junction table
-INSERT INTO source_packages_child_packages (source_package_id, child_package_id) VALUES ($1, $2) RETURNING *;
+INSERT INTO source_packages_child_packages (source_package_id, child_package_id)
+VALUES ($1, $2)
+RETURNING *;
 
 -- name: GetLabTestByPackageID :one
 -- description: Get a lab test connected to package by package id in lab_tests_packages junction table
-SELECT * FROM lab_tests_packages WHERE package_id = $1 LIMIT 1;
+SELECT *
+FROM lab_tests_packages
+WHERE package_id = $1
+LIMIT 1;

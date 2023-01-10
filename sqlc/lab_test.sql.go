@@ -365,7 +365,8 @@ SET test_name                 = COALESCE($1, test_name),
     cbc_percent               = COALESCE($32, cbc_percent),
     cbc_value                 = COALESCE($33, cbc_value),
     total_cannabinoid_percent = COALESCE($34, total_cannabinoid_percent),
-    total_cannabinoid_value   = COALESCE($35, total_cannabinoid_value)
+    total_cannabinoid_value   = COALESCE($35, total_cannabinoid_value),
+    updated_at                = NOW()
 WHERE id = $36
 RETURNING id, created_at, updated_at, test_name, batch_code, test_id_code, lab_facility_name, test_performed_date_time, test_completed, overall_passed, test_type_name, test_passed, test_comment, thc_total_percent, thc_total_value, cbd_percent, cbd_value, terpene_total_percent, terpene_total_value, thc_a_percent, thc_a_value, delta9_thc_percent, delta9_thc_value, delta8_thc_percent, delta8_thc_value, thc_v_percent, thc_v_value, cbd_a_percent, cbd_a_value, cbn_percent, cbn_value, cbg_a_percent, cbg_a_value, cbg_percent, cbg_value, cbc_percent, cbc_value, total_cannabinoid_percent, total_cannabinoid_value
 `

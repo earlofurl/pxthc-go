@@ -58,7 +58,7 @@ func (q *Queries) DeleteItem(ctx context.Context, id int64) error {
 	return err
 }
 
-const getItem = `-- name: GetItem :one
+const getItemByID = `-- name: GetItemByID :one
 SELECT id, created_at, updated_at, description, is_used, item_type_id, strain_id
 FROM items
 WHERE id = $1
@@ -66,8 +66,8 @@ LIMIT 1
 `
 
 // description: Get an item by ID
-func (q *Queries) GetItem(ctx context.Context, id int64) (*Item, error) {
-	row := q.db.QueryRowContext(ctx, getItem, id)
+func (q *Queries) GetItemByID(ctx context.Context, id int64) (*Item, error) {
+	row := q.db.QueryRowContext(ctx, getItemByID, id)
 	var i Item
 	err := row.Scan(
 		&i.ID,
@@ -142,7 +142,8 @@ UPDATE items
 SET description  = COALESCE($1, description),
     is_used      = COALESCE($2, is_used),
     item_type_id = COALESCE($3, item_type_id),
-    strain_id    = COALESCE($4, strain_id)
+    strain_id    = COALESCE($4, strain_id),
+    updated_at   = NOW()
 WHERE id = $5
 RETURNING id, created_at, updated_at, description, is_used, item_type_id, strain_id
 `

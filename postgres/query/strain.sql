@@ -63,7 +63,8 @@ SET name                      = COALESCE(sqlc.narg(name), name),
     total_cannabinoid_average = COALESCE(sqlc.narg(total_cannabinoid_average), total_cannabinoid_average),
     light_dep_2022            = COALESCE(sqlc.narg(light_dep_2022), light_dep_2022),
     fall_harvest_2022         = COALESCE(sqlc.narg(fall_harvest_2022), fall_harvest_2022),
-    quantity_available        = COALESCE(sqlc.narg(quantity_available), quantity_available)
+    quantity_available        = COALESCE(sqlc.narg(quantity_available), quantity_available),
+    updated_at                = NOW()
 WHERE id = sqlc.arg(id)
 RETURNING *;
 

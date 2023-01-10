@@ -33,7 +33,8 @@ WHERE facility_id = $1;
 -- description: Update a location within a facility
 UPDATE facility_locations
 SET name        = COALESCE(sqlc.narg(name), name),
-    facility_id = COALESCE(sqlc.narg(facility_id), facility_id)
+    facility_id = COALESCE(sqlc.narg(facility_id), facility_id),
+    updated_at  = NOW()
 WHERE id = sqlc.arg(id)
 RETURNING *;
 

@@ -23,6 +23,7 @@ SET hashed_password     = COALESCE(sqlc.narg(hashed_password), hashed_password),
     last_name           = COALESCE(sqlc.narg(last_name), last_name),
     email               = COALESCE(sqlc.narg(email), email),
     phone               = COALESCE(sqlc.narg(phone), phone),
-    role                = COALESCE(sqlc.narg(role), role)
+    role                = COALESCE(sqlc.narg(role), role),
+    updated_at          = NOW()
 WHERE username = sqlc.arg(username)
 RETURNING *;

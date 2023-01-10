@@ -270,7 +270,8 @@ SET name                      = COALESCE($1, name),
     total_cannabinoid_average = COALESCE($16, total_cannabinoid_average),
     light_dep_2022            = COALESCE($17, light_dep_2022),
     fall_harvest_2022         = COALESCE($18, fall_harvest_2022),
-    quantity_available        = COALESCE($19, quantity_available)
+    quantity_available        = COALESCE($19, quantity_available),
+    updated_at                = NOW()
 WHERE id = $20
 RETURNING id, created_at, updated_at, name, type, yield_average, terp_average_total, terp_1, terp_1_value, terp_2, terp_2_value, terp_3, terp_3_value, terp_4, terp_4_value, terp_5, terp_5_value, thc_average, total_cannabinoid_average, light_dep_2022, fall_harvest_2022, quantity_available
 `

@@ -89,7 +89,8 @@ SET test_name                 = COALESCE(sqlc.narg(test_name), test_name),
     cbc_percent               = COALESCE(sqlc.narg(cbc_percent), cbc_percent),
     cbc_value                 = COALESCE(sqlc.narg(cbc_value), cbc_value),
     total_cannabinoid_percent = COALESCE(sqlc.narg(total_cannabinoid_percent), total_cannabinoid_percent),
-    total_cannabinoid_value   = COALESCE(sqlc.narg(total_cannabinoid_value), total_cannabinoid_value)
+    total_cannabinoid_value   = COALESCE(sqlc.narg(total_cannabinoid_value), total_cannabinoid_value),
+    updated_at                = NOW()
 WHERE id = sqlc.arg(id)
 RETURNING *;
 

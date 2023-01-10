@@ -129,7 +129,7 @@ SET product_form        = COALESCE($1, product_form),
     product_category_id = COALESCE($4, product_category_id),
     updated_at          = NOW()
 WHERE id = $5
-    RETURNING id, created_at, updated_at, product_form, product_modifier, uom_default, product_category_id
+RETURNING id, created_at, updated_at, product_form, product_modifier, uom_default, product_category_id
 `
 
 type UpdateItemTypeParams struct {

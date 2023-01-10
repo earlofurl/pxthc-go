@@ -31,7 +31,8 @@ SET scheduled_pack_date_time     = COALESCE(sqlc.narg(scheduled_pack_date_time),
     order_total                  = COALESCE(sqlc.narg(order_total), order_total),
     notes                        = COALESCE(sqlc.narg(notes), notes),
     status                       = COALESCE(sqlc.narg(status), status),
-    customer_name                = COALESCE(sqlc.narg(customer_name), customer_name)
+    customer_name                = COALESCE(sqlc.narg(customer_name), customer_name),
+    updated_at                   = NOW()
 WHERE id = sqlc.arg(id)
 RETURNING *;
 

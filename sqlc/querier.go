@@ -70,7 +70,7 @@ type Querier interface {
 	// description: Get a location within a facility by name
 	GetFacilityLocationByName(ctx context.Context, name string) (*FacilityLocation, error)
 	// description: Get an item by ID
-	GetItem(ctx context.Context, id int64) (*Item, error)
+	GetItemByID(ctx context.Context, id int64) (*Item, error)
 	// description: Get an item type by id
 	GetItemTypeByID(ctx context.Context, id int64) (*ItemType, error)
 	// description: Get a lab test by ID

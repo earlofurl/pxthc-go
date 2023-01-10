@@ -34,7 +34,7 @@ func (q *Queries) CreateUom(ctx context.Context, arg *CreateUomParams) (*Uom, er
 	return &i, err
 }
 
-const getUom = `-- name: GetUom :one
+const getUomByID = `-- name: GetUomByID :one
 SELECT id, created_at, updated_at, name, abbreviation
 FROM uoms
 WHERE id = $1
@@ -42,8 +42,8 @@ LIMIT 1
 `
 
 // description: Get a UOM by ID
-func (q *Queries) GetUom(ctx context.Context, id int64) (*Uom, error) {
-	row := q.db.QueryRowContext(ctx, getUom, id)
+func (q *Queries) GetUomByID(ctx context.Context, id int64) (*Uom, error) {
+	row := q.db.QueryRowContext(ctx, getUomByID, id)
 	var i Uom
 	err := row.Scan(
 		&i.ID,
@@ -58,7 +58,7 @@ func (q *Queries) GetUom(ctx context.Context, id int64) (*Uom, error) {
 const getUomByName = `-- name: GetUomByName :one
 SELECT id, created_at, updated_at, name, abbreviation
 FROM uoms
-WHERE name = $1
+WHERE name ILIKE $1
 LIMIT 1
 `
 

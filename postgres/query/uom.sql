@@ -4,11 +4,18 @@ INSERT INTO uoms (name, abbreviation)
 VALUES ($1, $2)
 RETURNING *;
 
--- name: GetUom :one
+-- name: GetUomByID :one
 -- description: Get a UOM by ID
 SELECT *
 FROM uoms
 WHERE id = $1
+LIMIT 1;
+
+-- name: GetUomByName :one
+-- description: Get a UOM by name
+SELECT *
+FROM uoms
+WHERE name ILIKE $1
 LIMIT 1;
 
 -- name: ListUoms :many
@@ -16,10 +23,3 @@ LIMIT 1;
 SELECT *
 FROM uoms
 ORDER BY name;
-
--- name: GetUomByName :one
--- description: Get a UOM by name
-SELECT *
-FROM uoms
-WHERE name = $1
-LIMIT 1;

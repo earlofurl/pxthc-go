@@ -99,7 +99,7 @@ type Querier interface {
 	// description: Get a strain by ID
 	GetStrain(ctx context.Context, id int64) (*Strain, error)
 	// description: Get a UOM by ID
-	GetUom(ctx context.Context, id int64) (*Uom, error)
+	GetUomByID(ctx context.Context, id int64) (*Uom, error)
 	// description: Get a UOM by name
 	GetUomByName(ctx context.Context, name string) (*Uom, error)
 	GetUserByEmail(ctx context.Context, email string) (*User, error)

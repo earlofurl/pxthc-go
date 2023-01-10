@@ -10,6 +10,7 @@ func (s *Server) InitRoutes() {
 	//s.initHealth()
 	//s.initSwagger()
 	s.initUser()
+	s.initUom()
 }
 
 func (s *Server) initVersion() {
@@ -29,9 +30,15 @@ func (s *Server) initUser() {
 		router.Get("/", s.getUserByEmailHandler)
 		router.Post("/", s.createUserHandler)
 		router.Post("/login", s.loginUserHandler)
-		//router.Get("/{id}", s.UserService.FindUserById)
-		//router.Get("/email", s.UserService.FindUserByEmail)
-		//router.Put("/{id}", s.UserService.UpdateUser)
-		//router.Delete("/{id}", s.UserService.DeleteUser)
+	})
+}
+
+func (s *Server) initUom() {
+	s.router.Route("/api/uom", func(router chi.Router) {
+		router.Use(JsonMiddleware)
+
+		router.Get("/", s.getAllUomsHandler)
+		router.Get("/{id}", s.getUomByIDHandler)
+		router.Get("/name/{name}", s.getUomByNameHandler)
 	})
 }
